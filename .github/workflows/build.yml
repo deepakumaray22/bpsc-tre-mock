@@ -10,7 +10,7 @@ build:
 runs-on: ubuntu-latest
 
 steps:
-  - name: Checkout repository
+  - name: Checkout Repository
     uses: actions/checkout@v4
 
   - name: Setup Node.js
@@ -27,39 +27,87 @@ steps:
   - name: Setup Android SDK
     uses: android-actions/setup-android@v3
 
-  - name: Install Dependencies
-    run: npm install
-
-  - name: Prepare Web and Android Project
+  - name: Auto-Setup Project Files & HTML
     run: |
-      # 1. Ensure www folder exists and has index.html
+      echo "=== 1. Ensuring www folder and index.html exist ==="
       mkdir -p www
-      if [ -f "index.html" ] && [ ! -f "www/index.html" ]; then
+      
+      # Search for any index.html or HTML file in the repo and copy to www/index.html
+      if [ -f "www/index.html" ]; then
+        echo "Found www/index.html"
+      elif [ -f "index.html" ]; then
+        echo "Found root index.html -> copying to www/index.html"
         cp index.html www/index.html
+      else
+        FOUND_HTML=$(find . -maxdepth 3 -iname "*index*.html" | head -n 1)
+        if [ -n "$FOUND_HTML" ]; then
+          echo "Found $FOUND_HTML -> copying to www/index.html"
+          cp "$FOUND_HTML" www/index.html
+        fi
       fi
 
-      # 2. Add Android platform if not present
+      echo "=== 2. Ensuring package.json exists ==="
+      if [ ! -f "package.json" ]; then
+        cat << 'EOF' > package.json
+      {
+        "name": "bpsc-tre-mock",
+        "version": "1.0.0",
+        "dependencies": {
+          "@capacitor/android": "^6.0.0",
+          "@capacitor/cli": "^6.0.0",
+          "@capacitor/core": "^6.0.0"
+        }
+      }
+      EOF
+      fi
+
+      echo "=== 3. Ensuring capacitor.config.json exists ==="
+      if [ ! -f "capacitor.config.json" ]; then
+        cat << 'EOF' > capacitor.config.json
+      {
+        "appId": "com.deepakray.bpsctre",
+        "appName": "BPSC TRE 4.0 Maths Mock",
+        "webDir": "www",
+        "bundledWebRuntime": false
+      }
+      EOF
+      fi
+
+  - name: Install Dependencies
+    run: |
+      npm install
+
+  - name: Configure Capacitor Android Platform
+    run: |
+      # Remove broken android folder if it failed previously
+      if [ -d "android" ] && [ ! -f "android/gradlew" ]; then
+        rm -rf android
+      fi
+
       if [ ! -d "android" ]; then
         npx cap add android
       fi
 
-      # 3. Create missing assets folder to fix the ENOENT bug
-      mkdir -p android/app/src/main/assets
-      echo "[]" > android/app/src/main/assets/capacitor.plugins.json
+      # Ensure the required Android assets directory exists
+      mkdir -p android/app/src/main/assets/public
+      if [ ! -f "android/app/src/main/assets/capacitor.plugins.json" ]; then
+        echo "[]" > android/app/src/main/assets/capacitor.plugins.json
+      fi
 
-      # 4. Copy web files and sync
+      # Sync web code into the native Android shell
       npx cap copy android
       npx cap sync android
 
-  - name: Build Debug APK with Gradle
+  - name: Compile APK via Gradle
     run: |
       cd android
       chmod +x ./gradlew
-      ./gradlew assembleDebug --stacktrace
+      ./gradlew assembleDebug --no-daemon --stacktrace
 
-  - name: Upload Installable APK
+  - name: Upload Finished APK
     uses: actions/upload-artifact@v4
     with:
       name: BPSC-TRE-4.0-Maths-Mock-APK
       path: android/app/build/outputs/apk/debug/app-debug.apk
-
+      if-no-files-found: error
+      
