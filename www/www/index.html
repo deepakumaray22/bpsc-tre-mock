@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BPSC TRE 4.0 - Class 9-10 Mathematics Mock Test Portal</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- KaTeX for mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 antialiased selection:bg-blue-600 selection:text-white">
+
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo & Exam Details -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md text-lg">
+            B
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight">BPSC TRE 4.0 Mock Examination</h1>
+              <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full">Class IX–X</span>
+            </div>
+            <p class="text-xs text-slate-500 font-medium">Subject: Mathematics (150 Questions • 150 Marks • 150 Mins)</p>
+          </div>
+        </div>
+
+        <!-- Center: Live Timer -->
+        <div id="nav-timer-container" class="hidden sm:flex items-center gap-2 bg-slate-900 text-white px-3 py-1.5 rounded-lg shadow-sm">
+          <i data-lucide="timer" class="w-4 h-4 text-amber-400"></i>
+          <span class="text-xs uppercase tracking-wider text-slate-300 font-medium">Time Left:</span>
+          <span id="nav-timer" class="font-mono text-sm font-bold text-amber-300">02:30:00</span>
+        </div>
+
+        <!-- Right: Actions & Language Selector -->
+        <div class="flex items-center gap-2">
+          <div class="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-300 text-xs">
+            <button id="lang-btn-en" onclick="setLanguage('en')" class="px-2 py-1 rounded-md font-semibold transition text-slate-600 hover:text-slate-900">
+              English
+            </button>
+            <button id="lang-btn-hi" onclick="setLanguage('hi')" class="px-2 py-1 rounded-md font-semibold transition text-slate-600 hover:text-slate-900">
+              हिन्दी
+            </button>
+            <button id="lang-btn-bi" onclick="setLanguage('bilingual')" class="px-2 py-1 rounded-md font-bold bg-white text-blue-700 shadow-sm transition">
+              Bilingual
+            </button>
+          </div>
+
+          <!-- Paywall Status Button -->
+          <button id="nav-unlock-btn" onclick="openPaywallModal()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center gap-1.5 shadow-sm transition">
+            <i data-lucide="lock" class="w-3.5 h-3.5" id="nav-lock-icon"></i>
+            <span id="nav-unlock-text">Unlock Test (₹49)</span>
+          </button>
+          
+          <button id="btn-new-mock" onclick="openNewTestModal()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 flex items-center gap-1.5 transition">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-600"></i>
+            <span class="hidden sm:inline">New Mock</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 flex flex-col">
+
+    <!-- SCREEN 1: WELCOME & INSTRUCTIONS -->
+    <div id="screen-welcome" class="space-y-6">
+      <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl space-y-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 rounded-full px-3 py-1 text-xs font-semibold text-blue-200">
+              <i data-lucide="award" class="w-3.5 h-3.5"></i> Authentic BPSC Pattern (5-Option OMR Standard)
+            </div>
+            <div class="inline-flex items-center gap-1.5 bg-amber-400/20 border border-amber-400/40 rounded-full px-3 py-1 text-xs font-bold text-amber-300">
+              <i data-lucide="user-check" class="w-3.5 h-3.5 text-amber-400"></i> App Created & Curated by: Deepak Kumar Ray
+            </div>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+            BPSC TRE 4.0 Secondary Teacher (Class 9-10) Mathematics Full Mock Test
+          </h2>
+          <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
+            Strictly prepared as per the latest Bihar Public Service Commission syllabus and previous year questions (PYQs from TRE 1.0, 2.0 & 3.0). Includes Class 9–10 SCERT/NCERT core curriculum with graduation-level analytical depth.
+          </p>
+
+          <div class="flex items-center gap-2.5 py-1.5 px-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/15 w-fit text-xs text-slate-200">
+            <i data-lucide="graduation-cap" class="w-4 h-4 text-amber-300"></i>
+            <span>Educational Initiative & Test Architecture by <strong class="text-white font-bold">Deepak Kumar Ray</strong></span>
+          </div>
+
+          <div id="hero-paywall-badge" class="flex items-center justify-between gap-3 p-3 rounded-xl bg-gradient-to-r from-amber-500/20 to-yellow-500/10 border border-amber-400/30 text-xs">
+            <div class="flex items-center gap-2 text-amber-200 font-medium">
+              <i data-lucide="shield-alert" class="w-4 h-4 text-amber-400 flex-shrink-0"></i>
+              <span>Access Status: <strong id="hero-access-status" class="text-amber-300 font-bold">Premium Pass Required</strong> (Complete 150 Qs + KaTeX Step Solutions)</span>
+            </div>
+            <button onclick="openPaywallModal()" class="px-3 py-1 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-[11px] shadow transition flex items-center gap-1 flex-shrink-0">
+              <i data-lucide="key" class="w-3 h-3"></i> Get Access
+            </button>
+          </div>
+
+          <!-- Language Selector -->
+          <div class="bg-white/10 backdrop-blur-md rounded-xl p-3.5 border border-white/20 mt-2">
+            <label class="block text-xs font-bold text-blue-200 mb-2 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="languages" class="w-4 h-4"></i> Choose Test Medium / परीक्षा का माध्यम चुनें:
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+              <label onclick="setLanguage('en')" class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-900/40 hover:bg-slate-900/60 border border-white/10 cursor-pointer transition">
+                <input type="radio" name="welcome_lang" value="en" id="welcome-lang-en" class="text-blue-500 focus:ring-blue-400">
+                <div>
+                  <div class="font-bold text-white">English Medium</div>
+                  <div class="text-[11px] text-slate-300">Questions & options in English</div>
+                </div>
+              </label>
+              <label onclick="setLanguage('hi')" class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-900/40 hover:bg-slate-900/60 border border-white/10 cursor-pointer transition">
+                <input type="radio" name="welcome_lang" value="hi" id="welcome-lang-hi" class="text-blue-500 focus:ring-blue-400">
+                <div>
+                  <div class="font-bold text-white font-['Noto_Sans_Devanagari']">हिन्दी माध्यम (Hindi)</div>
+                  <div class="text-[11px] text-slate-300">प्रश्न व विकल्प शुद्ध हिन्दी में</div>
+                </div>
+              </label>
+              <label onclick="setLanguage('bilingual')" class="flex items-center gap-2.5 p-2 rounded-lg bg-slate-900/40 hover:bg-slate-900/60 border border-white/10 cursor-pointer transition">
+                <input type="radio" name="welcome_lang" value="bilingual" id="welcome-lang-bi" checked class="text-blue-500 focus:ring-blue-400">
+                <div>
+                  <div class="font-bold text-white">Bilingual / द्विभाषी</div>
+                  <div class="text-[11px] text-slate-300">Both English & हिन्दी displayed</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="pt-2 flex flex-wrap gap-3">
+            <button onclick="startTest()" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-lg hover:shadow-blue-500/25 transition transform active:scale-95 flex items-center gap-2">
+              <i data-lucide="play-circle" class="w-5 h-5"></i>
+              Start 150-Question Mock Test Now
+            </button>
+            <button onclick="openNewTestModal()" class="px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold rounded-xl backdrop-blur-sm transition flex items-center gap-2">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+              Select / Generate Custom Set
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">Part I • Qualifying</span>
+              <span class="text-xs font-bold text-slate-500">30 Questions</span>
+            </div>
+            <h3 class="font-bold text-slate-900 text-base mb-1">Language (English + Hindi)</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              • English: 8 Qs (Grammar, Vocab, Comprehension)<br>
+              • Hindi: 22 Qs (Sandhi, Samas, Muhavare, Vyakaran)<br>
+              <strong class="text-amber-700">Crucial:</strong> Requires min. 30% (9 Marks) to qualify.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span>Marks: 30</span>
+            <span class="text-emerald-600 font-semibold">Qualifying Nature</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">Part II • GS Merit</span>
+              <span class="text-xs font-bold text-slate-500">40 Questions</span>
+            </div>
+            <h3 class="font-bold text-slate-900 text-base mb-1">General Studies (GS)</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              • Elementary Math & Mental Ability (8 Qs)<br>
+              • General Science (Physics, Chem, Bio) (8 Qs)<br>
+              • Current Affairs & Bihar Special GK (8 Qs)<br>
+              • Indian National Movement & History (10 Qs)<br>
+              • Geography & Environment (6 Qs)
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span>Marks: 40</span>
+            <span class="text-blue-600 font-semibold">Counts in Merit</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-200">Part III • Core Subject</span>
+              <span class="text-xs font-bold text-slate-500">80 Questions</span>
+            </div>
+            <h3 class="font-bold text-slate-900 text-base mb-1">Mathematics (Class IX-X)</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              • Real Numbers, Polynomials & Algebra<br>
+              • Coordinate & Euclidean Geometry, Circles<br>
+              • Trigonometry & Heights/Distances<br>
+              • Mensuration 2D & 3D, Statistics, Probability<br>
+              • Set Theory, Logarithms & PYQ Concepts
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+            <span>Marks: 80</span>
+            <span class="text-indigo-600 font-semibold">Core Merit Decider</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+        <h4 class="font-bold text-slate-900 text-sm mb-3 flex items-center gap-2">
+          <i data-lucide="info" class="w-4 h-4 text-blue-600"></i>
+          Official BPSC TRE Exam Rules & Marking Scheme
+        </h4>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-600">
+          <li class="flex items-start gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5"></span>
+            <span><strong>Total Time:</strong> 150 minutes (2 hours and 30 minutes) without break.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5"></span>
+            <span><strong>5 Options per question:</strong> Includes (D) "More than one of the above" and (E) "None of the above".</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5"></span>
+            <span><strong>No Negative Marking:</strong> As per official BPSC TRE rules, attempt every single question.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5"></span>
+            <span><strong>Merit Ranking:</strong> Calculated out of 120 Marks (Part II + Part III), provided Part I is qualified.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: ACTIVE TEST INTERFACE -->
+    <div id="screen-test" class="hidden flex-1 flex flex-col gap-4">
+
+      <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+          <button id="tab-sec-1" onclick="switchSection(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-blue-600 text-white shadow-sm">
+            <span>Part I: Language (1-30)</span>
+            <span id="badge-sec-1" class="text-[10px] bg-white/20 px-1.5 py-0.5 rounded-full">0/30</span>
+          </button>
+          <button id="tab-sec-2" onclick="switchSection(2)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200">
+            <span>Part II: GS (31-70)</span>
+            <span id="badge-sec-2" class="text-[10px] bg-slate-300 px-1.5 py-0.5 rounded-full">0/40</span>
+          </button>
+          <button id="tab-sec-3" onclick="switchSection(3)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200">
+            <span>Part III: Maths (71-150)</span>
+            <span id="badge-sec-3" class="text-[10px] bg-slate-300 px-1.5 py-0.5 rounded-full">0/80</span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <div class="sm:hidden flex items-center gap-1.5 bg-slate-900 text-amber-300 px-2.5 py-1 rounded-md text-xs font-mono font-bold">
+            <i data-lucide="timer" class="w-3.5 h-3.5"></i>
+            <span id="mobile-timer">02:30:00</span>
+          </div>
+
+          <button onclick="confirmFinishModal()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg shadow-sm transition flex items-center gap-1.5">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span>Submit Test</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4">
+        
+        <!-- Left 8 Cols: Question Display Area -->
+        <div class="lg:col-span-8 flex flex-col bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden min-h-[560px]">
+          
+          <div class="bg-slate-50 px-5 py-3 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span id="q-number-pill" class="px-3 py-1 rounded-full text-xs font-black bg-blue-600 text-white shadow-sm">Question 1 of 150</span>
+              <span id="q-section-label" class="text-xs font-semibold text-slate-500">Part I: Language</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <button id="btn-mark-review" onclick="toggleMarkReview()" class="text-xs font-semibold px-2.5 py-1 rounded-lg border border-purple-200 text-purple-700 hover:bg-purple-50 flex items-center gap-1.5 transition">
+                <i data-lucide="bookmark" class="w-3.5 h-3.5 text-purple-600"></i>
+                <span id="mark-review-text">Mark for Review</span>
+              </button>
+              <button onclick="clearCurrentAnswer()" class="text-xs font-medium px-2 py-1 text-slate-500 hover:text-rose-600 transition">
+                Clear Response
+              </button>
+            </div>
+          </div>
+
+          <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-6 overflow-y-auto custom-scrollbar">
+            <div class="space-y-3">
+              <div id="q-text-en" class="text-base sm:text-lg font-semibold text-slate-900 leading-relaxed"></div>
+              <div id="q-text-hi" class="text-sm sm:text-base font-medium text-slate-700 font-['Noto_Sans_Devanagari'] leading-relaxed pt-2 border-t border-dashed border-slate-200"></div>
+            </div>
+
+            <div id="options-container" class="space-y-3 pt-2"></div>
+          </div>
+
+          <div class="bg-slate-50 px-5 py-3.5 border-t border-slate-200 flex items-center justify-between">
+            <button id=
