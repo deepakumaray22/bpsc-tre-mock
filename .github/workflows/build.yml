@@ -1,49 +1,65 @@
 name: Build Android APK
 
 on:
-  push:
-    branches: [ "main", "master" ]
-  workflow_dispatch:
+push:
+branches: [ "main", "master" ]
+workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+build:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+  - name: Setup Node.js
+    uses: actions/setup-node@v4
+    with:
+      node-version: 22
 
-      - name: Setup Java 17
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+  - name: Setup Java 17
+    uses: actions/setup-java@v5
+    with:
+      distribution: 'temurin'
+      java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+  - name: Setup Android SDK
+    uses: android-actions/setup-android@v3
 
-      - name: Install Dependencies
-        run: npm install
+  - name: Install Dependencies
+    run: npm install
 
-      - name: Prepare Capacitor Android
-        run: |
-          npx cap add android
-          npx cap copy
-          npx cap sync android
+  - name: Prepare Web and Android Project
+    run: |
+      # 1. Ensure www folder exists and has index.html
+      mkdir -p www
+      if [ -f "index.html" ] && [ ! -f "www/index.html" ]; then
+        cp index.html www/index.html
+      fi
 
-      - name: Build APK with Gradle
-        run: |
-          cd android
-          chmod +x ./gradlew
-          ./gradlew assembleDebug --stacktrace
+      # 2. Add Android platform if not present
+      if [ ! -d "android" ]; then
+        npx cap add android
+      fi
 
-      - name: Upload APK File
-        uses: actions/upload-artifact@v4
-        with:
-          name: BPSC-TRE-4.0-Maths-Mock-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+      # 3. Create missing assets folder to fix the ENOENT bug
+      mkdir -p android/app/src/main/assets
+      echo "[]" > android/app/src/main/assets/capacitor.plugins.json
+
+      # 4. Copy web files and sync
+      npx cap copy android
+      npx cap sync android
+
+  - name: Build Debug APK with Gradle
+    run: |
+      cd android
+      chmod +x ./gradlew
+      ./gradlew assembleDebug --stacktrace
+
+  - name: Upload Installable APK
+    uses: actions/upload-artifact@v4
+    with:
+      name: BPSC-TRE-4.0-Maths-Mock-APK
+      path: android/app/build/outputs/apk/debug/app-debug.apk
+
