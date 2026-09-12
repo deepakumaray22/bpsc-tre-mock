@@ -2,7 +2,9 @@ name: Build Android APK
 
 on:
 push:
-branches: [ "main", "master" ]
+branches:
+- main
+- master
 workflow_dispatch:
 
 jobs:
@@ -29,10 +31,7 @@ steps:
 
   - name: Auto-Setup Project Files & HTML
     run: |
-      echo "=== 1. Ensuring www folder and index.html exist ==="
       mkdir -p www
-      
-      # Search for any index.html or HTML file in the repo and copy to www/index.html
       if [ -f "www/index.html" ]; then
         echo "Found www/index.html"
       elif [ -f "index.html" ]; then
@@ -46,7 +45,6 @@ steps:
         fi
       fi
 
-      echo "=== 2. Ensuring package.json exists ==="
       if [ ! -f "package.json" ]; then
         cat << 'EOF' > package.json
       {
@@ -61,7 +59,6 @@ steps:
       EOF
       fi
 
-      echo "=== 3. Ensuring capacitor.config.json exists ==="
       if [ ! -f "capacitor.config.json" ]; then
         cat << 'EOF' > capacitor.config.json
       {
@@ -79,7 +76,6 @@ steps:
 
   - name: Configure Capacitor Android Platform
     run: |
-      # Remove broken android folder if it failed previously
       if [ -d "android" ] && [ ! -f "android/gradlew" ]; then
         rm -rf android
       fi
@@ -88,13 +84,11 @@ steps:
         npx cap add android
       fi
 
-      # Ensure the required Android assets directory exists
       mkdir -p android/app/src/main/assets/public
       if [ ! -f "android/app/src/main/assets/capacitor.plugins.json" ]; then
         echo "[]" > android/app/src/main/assets/capacitor.plugins.json
       fi
 
-      # Sync web code into the native Android shell
       npx cap copy android
       npx cap sync android
 
