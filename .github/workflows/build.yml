@@ -29,7 +29,7 @@ steps:
   - name: Setup Android SDK
     uses: android-actions/setup-android@v3
 
-  - name: Auto-Setup Project Files & HTML
+  - name: Setup Project Files and HTML
     run: |
       mkdir -p www
       if [ -f "www/index.html" ]; then
@@ -46,33 +46,15 @@ steps:
       fi
 
       if [ ! -f "package.json" ]; then
-        cat << 'EOF' > package.json
-      {
-        "name": "bpsc-tre-mock",
-        "version": "1.0.0",
-        "dependencies": {
-          "@capacitor/android": "^6.0.0",
-          "@capacitor/cli": "^6.0.0",
-          "@capacitor/core": "^6.0.0"
-        }
-      }
-      EOF
+        echo '{"name":"bpsc-tre-mock","version":"1.0.0","dependencies":{"@capacitor/android":"^6.0.0","@capacitor/cli":"^6.0.0","@capacitor/core":"^6.0.0"}}' > package.json
       fi
 
       if [ ! -f "capacitor.config.json" ]; then
-        cat << 'EOF' > capacitor.config.json
-      {
-        "appId": "com.deepakray.bpsctre",
-        "appName": "BPSC TRE 4.0 Maths Mock",
-        "webDir": "www",
-        "bundledWebRuntime": false
-      }
-      EOF
+        echo '{"appId":"com.deepakray.bpsctre","appName":"BPSC TRE 4.0 Maths Mock","webDir":"www","bundledWebRuntime":false}' > capacitor.config.json
       fi
 
   - name: Install Dependencies
-    run: |
-      npm install
+    run: npm install
 
   - name: Configure Capacitor Android Platform
     run: |
